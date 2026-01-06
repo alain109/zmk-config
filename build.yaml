@@ -19,6 +19,5 @@
 #
 ---
 include:
-  - board: planck_rev6
-include:
-  - board: planck_rev6
+  - board: xiao_ble
+    shield: hummingbird
