@@ -19,9 +19,9 @@
 #
 ---
 include:
-  - board: xiao_ble
+  - board: seeduino_xiao_ble
     shield: tern
-  - board: xiao_ble
+  - board: seeduino_xiao_ble
     shield: hummingbird
-  - board: xiao_ble
+  - board: seeduino_xiao_ble
     shield: rufous
