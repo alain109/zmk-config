@@ -23,3 +23,5 @@ include:
     shield: tern
   - board: xiao_ble
     shield: hummingbird
+  - board: xiao_ble
+    shield: rufous
