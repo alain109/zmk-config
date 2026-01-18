@@ -1,0 +1,10 @@
+file_format: "1"
+id: tern
+name: Tern
+type: shield
+url: https://github.com/PJE66/hummingbird
+requires: [pro_micro]
+exposes: [i2c_oled]
+features:
+  - keys
+siblings: []

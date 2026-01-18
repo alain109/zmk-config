@@ -19,5 +19,7 @@
 #
 ---
 include:
-  - board: seeeduino_xiao_ble
+  - board: xiao_ble
+    shield: tern
+  - board: hummingbird
     shield: tern
