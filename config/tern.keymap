@@ -1,0 +1,401 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/rgb.h>
+
+// Définition des layers
+#define BASE 0
+#define NAV 1
+#define SYM 2
+#define NUM 3
+#define LAYER4 4
+#define LAYER5 5
+#define FUNC 6
+#define LAYER7 7
+#define LAYER8 8
+#define LAYER9 9
+
+/ {
+    behaviors {
+        // Tap Dance pour remplacer TD(1) - OSL(3) ou / ou passage layer 1
+        td_slash: tap_dance_slash {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <100>;
+            bindings = <&sl NUM>, <&kp SLASH>;
+        };
+
+        // TD(5) - Backspace avec comportements multiples
+        td_bspc: tap_dance_backspace {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <250>;
+            bindings = <&kp BSPC>, <&mo FUNC>, <&kp LC(BSPC)>, <&kp DEL>;
+        };
+
+        // TD(9) - Space avec MO(1)
+        td_spc1: tap_dance_space1 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp SPACE>, <&mo NAV>;
+        };
+
+        // TD(10) - Enter avec MO(2)
+        td_ent: tap_dance_enter {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <250>;
+            bindings = <&kp RET>, <&mo SYM>;
+        };
+
+        // TD(11) - F avec MO(6)
+        td_f: tap_dance_f {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <250>;
+            bindings = <&kp F>, <&mo FUNC>;
+        };
+
+        // TD(14) - Escape avec Shift
+        td_esc: tap_dance_esc {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp ESC>, <&kp LSHFT>;
+        };
+
+        // TD(16) - KP_1 avec Numlock au hold long
+        td_kp1: tap_dance_kp1 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp KP_N1>, <&none>, <&none>, <&kp KP_NUM>;
+        };
+
+        // Macros pour les accents français
+        macro_u_grave: macro_u_grave {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LBKT &kp U>;
+        };
+
+        macro_i_grave: macro_i_grave {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LBKT &kp I>;
+        };
+
+        macro_u_circ: macro_u_circ {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LBKT &kp Q>;
+        };
+
+        macro_e_circ: macro_e_circ {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LBKT &kp E>;
+        };
+
+        macro_i_circ: macro_i_circ {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LBKT) &kp I>;
+        };
+
+        macro_o_circ: macro_o_circ {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LBKT &kp O>;
+        };
+
+        macro_oe: macro_oe {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp O &kp E>;
+        };
+
+        macro_qe: macro_qe {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp Q &kp E>;
+        };
+
+        macro_e_grave: macro_e_grave {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LBKT &kp E>;
+        };
+
+        macro_e_grave_maj: macro_e_grave_maj {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LBKT) &kp E>;
+        };
+
+        // Macro pour espace insécable
+        macro_nbsp_test: macro_nbsp_test {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = 
+                <&macro_press &kp LALT>,
+                <&macro_tap &kp KP_N0 &kp KP_N1 &kp KP_N6 &kp KP_N0>,
+                <&macro_release &kp LALT>,
+                <&macro_tap &kp SPACE &kp T &kp E &kp S &kp T>;
+        };
+
+        // Macro texte
+        macro_hqrpentier: macro_hqrpentier {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp H &kp Q &kp R &kp P &kp E &kp N &kp T &kp I &kp E &kp R>;
+        };
+
+        macro_email: macro_email {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = 
+                <&kp A &kp L &kp A &kp I &kp N &kp AT &kp C &kp H &kp A &kp R &kp P &kp E &kp N &kp T &kp I &kp E &kp R &kp SPACE>;
+        };
+
+        // Comportements hold-tap personnalisés
+        hm_l: homerow_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 25 26 27 28 29>; // Touches droite
+        };
+
+        hm_r: homerow_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24>; // Touches gauche
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+
+        // Combo Shift (6 + V)
+        combo_shift {
+            timeout-ms = <50>;
+            key-positions = <4 21>;
+            bindings = <&sk LSHFT>;
+        };
+
+        // Combo Delete (Backspace + Shift)
+        combo_del {
+            timeout-ms = <50>;
+            key-positions = <27 28>;
+            bindings = <&kp DEL>;
+        };
+
+        // Combo B (Z + F)
+        combo_b {
+            timeout-ms = <50>;
+            key-positions = <2 22>;
+            bindings = <&kp B>;
+        };
+
+        // Combo V (N + P)
+        combo_v {
+            timeout-ms = <50>;
+            key-positions = <13 11>;
+            bindings = <&kp V>;
+        };
+
+        // Combo X (S + C)
+        combo_x {
+            timeout-ms = <50>;
+            key-positions = <10 20>;
+            bindings = <&kp X>;
+        };
+
+        // Combo @ (NONUS_BSLASH + 5)
+        combo_at {
+            timeout-ms = <50>;
+            key-positions = <10 14>;
+            bindings = <&kp RA(N2)>;
+        };
+
+        // Combo K (Y + U)
+        combo_k {
+            timeout-ms = <50>;
+            key-positions = <14 24>;
+            bindings = <&kp K>;
+        };
+
+        // Combo W (A + Q)
+        combo_w {
+            timeout-ms = <50>;
+            key-positions = <0 20>;
+            bindings = <&kp W>;
+        };
+
+        // Combo H (SEMI + R)
+        combo_h {
+            timeout-ms = <50>;
+            key-positions = <3 23>;
+            bindings = <&kp H>;
+        };
+
+        // Combo G (D + T)
+        combo_g {
+            timeout-ms = <50>;
+            key-positions = <13 23>;
+            bindings = <&kp G>;
+        };
+
+        // Combo M (SEMI + I)
+        combo_m {
+            timeout-ms = <50>;
+            key-positions = <4 24>;
+            bindings = <&kp M>;
+        };
+
+        // Combo Caps Word (Bspc + Space)
+        combo_caps {
+            timeout-ms = <50>;
+            key-positions = <27 28>;
+            bindings = <&caps_word>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        // Layer 0: BASE (Ergo-L)
+        base_layer {
+            bindings = <
+                &kp A           &kp O           &kp Z           &kp SEMI        &none
+                &kp C           &kp P           &kp J           &kp D           &kp Y
+                &kp Q           &hm_l LCTRL E   &td_f           &hm_r RALT R    &hm_r LGUI I
+                &hm_l LGUI S    &hm_l LALT N    &kp L           &hm_r RCTRL T   &kp U
+                &kp X           &kp V           &td_bspc        &kp G           &td_ent
+                &kp N6          &td_esc         &kp H           &kp M           &td_spc1
+            >;
+        };
+
+        // Layer 1: NAV (Navigation)
+        nav_layer {
+            bindings = <
+                &kp TAB         &kp UP          &kp PG_UP       &kp KP_N7       &kp KP_N9
+                &kp PG_UP       &kp PG_DN       &kp KP_SLASH    &kp KP_N8       &kp KP_PLUS
+                &kp CAPS        &kp DOWN        &kp PG_DN       &kp KP_N4       &kp KP_N6
+                &kp LEFT        &kp RIGHT       &kp KP_MINUS    &kp KP_N5       &kp KP_N0
+                &kp C_VOL_DN    &kp C_VOL_UP    &kp BSPC        &kp KP_N2       &td_ent
+                &kp C_MUTE      &mo LAYER7      &td_kp1         &kp KP_N3       &kp SPACE
+            >;
+        };
+
+        // Layer 2: SYM (Symboles)
+        sym_layer {
+            bindings = <
+                &kp LBKT        &kp LS(GRAVE)   &kp LS(SQT)     &kp N1          &kp N4
+                &kp GRAVE       &kp RBKT        &kp RA(N0)      &kp KP_MULTIPLY &kp RA(N7)
+                &kp RA(N4)      &kp MINUS       &kp EQUAL       &kp KP_PLUS     &kp KP_SLASH
+                &kp N5          &kp RA(EQUAL)   &kp RA(N8)      &kp KP_MINUS    &kp N3
+                &kp RA(N5)      &kp N8          &kp LGUI        &kp COMMA       &kp SPACE
+                &kp RA(MINUS)   &kp LCTRL       &kp SLASH       &kp DOT         &mo NAV
+            >;
+        };
+
+        // Layer 3: NUM (Chiffres et accents)
+        num_layer {
+            bindings = <
+                &macro_u_circ   &macro_o_circ   &none           &kp LS(NON_US_HASH) &none
+                &kp N9          &macro_i_circ   &none           &none           &none
+                &kp N0          &kp N7          &none           &kp MINUS       &macro_e_circ
+                &kp N2          &macro_i_grave  &kp N5          &macro_u_grave  &kp SQT
+                &macro_qe       &none           &none           &none           &none
+                &kp RA(E)       &none           &none           &none           &none
+            >;
+        };
+
+        // Layers 4-5 vides
+        layer_4 {
+            bindings = <
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+            >;
+        };
+
+        layer_5 {
+            bindings = <
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+            >;
+        };
+
+        // Layer 6: FUNC (Fonctions et souris)
+        func_layer {
+            bindings = <
+                &kp C_AC_SCROLL_UP   &none       &kp F15         &kp F7          &kp F9
+                &none                &none       &kp F13         &kp F8          &kp F10
+                &kp C_AC_SCROLL_DOWN &none       &kp F16         &kp F4          &kp F6
+                &none                &none       &kp F14         &kp F5          &kp F11
+                &kp K_CALC           &none       &none           &kp F2          &none
+                &none                &none       &kp F1          &kp F3          &none
+            >;
+        };
+
+        // Layer 7
+        layer_7 {
+            bindings = <
+                &none &none &none           &none           &none
+                &none &none &none           &none           &none
+                &none &none &none           &kp LS(EQUAL)   &kp LS(DOT)
+                &none &none &kp RA(N8)      &kp N6          &kp N3
+                &none &none &none           &kp COMMA       &none
+                &none &none &kp SLASH       &kp DOT         &none
+            >;
+        };
+
+        // Layer 8: RGB (codes hexa convertis en contrôles RGB et BT)
+        rgb_layer {
+            bindings = <
+                &rgb_ug RGB_HUI &rgb_ug RGB_SAI &rgb_ug RGB_BRI &rgb_ug RGB_SPI &rgb_ug RGB_EFF
+                &rgb_ug RGB_HUD &rgb_ug RGB_SAD &rgb_ug RGB_BRD &rgb_ug RGB_SPD &rgb_ug RGB_EFR
+                &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4
+                &bt BT_CLR      &out OUT_USB    &out OUT_BLE    &rgb_ug RGB_TOG &bootloader
+                &none           &none           &none           &none           &none
+                &none           &none           &none           &none           &sys_reset
+            >;
+        };
+
+        // Layer 9: Voyelles sans modificateurs
+        layer_9 {
+            bindings = <
+                &none &kp O &none &none &kp Y
+                &none &none &none &none &none
+                &kp Q &kp E &none &none &kp U
+                &none &none &none &kp I &none
+                &none &none &none &none &none
+                &none &none &none &none &none
+            >;
+        };
+    };
+};

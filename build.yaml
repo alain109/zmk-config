@@ -20,5 +20,6 @@
 ---
 include:
   - board: seeeduino_xiao
-    shield: rufous
-
+    shield: humningbird
+  - board: seeeduino_xiao
+    shield: tern
